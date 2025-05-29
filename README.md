@@ -4,7 +4,7 @@
 
 
 
-![xbhs3](C:\Users\Admin\Desktop\teaser.jpg)🤗[Dataset](https://huggingface.co/datasets/Jietson/InfoChartQA)
+![xbhs3](teaser.jpg)🤗[Dataset](https://huggingface.co/datasets/Jietson/InfoChartQA)
 
 # Dataset 
 You can find our dataset on huggingface: 🤗[InfoChartQA Dataset](https://huggingface.co/datasets/Jietson/InfoChartQA)
