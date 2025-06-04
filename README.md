@@ -104,6 +104,21 @@ python -c "import checker; checker.evaluate(sys.argv[1], sys.argv[2])" PATH_TO_I
 
 Our original data contributions (all data except the charts) are distributed under the [CC BY-SA 4.0](https://github.com/princeton-nlp/CharXiv/blob/main/data/LICENSE) license. Our code is licensed under [Apache 2.0](https://github.com/princeton-nlp/CharXiv/blob/main/LICENSE) license. The copyright of the charts belong to the original authors.
 
+## Paper Links
+
+### 📌 Main Paper (This Repository)
+
+- **[InfoChartQA: A Benchmark for Multimodal Question Answering on Infographic Charts](https://arxiv.org/abs/2505.19028)**  
+  _Minzhi Lin, Tianchi Xie, Mengchen Liu, Yilin Ye, Changjian Chen, Shixia Liu_  
+
+### Relevant Papers
+
+- **[OrionBench: A Benchmark for Chart and Human-Recognizable Object Detection in Infographics](https://arxiv.org/abs/2505.17473)**  Jiangning Zhu, Yuxing Zhou, Zheng Wang, Juntao Yao, Yima Gu, Yuhui Yuan, Shixia Liu_  
+
+- **[ChartGalaxy: A Dataset for Infographic Chart Understanding and Generation](https://arxiv.org/abs/2505.18668)**  
+  _Zhen Li, Duan Li, Yukai Guo, Xinyuan Guo, Bowen Li, Lanxi Xiao, Shenyu Qiao, Jiashu Chen, Zijian Wu, Hui Zhang, Xinhuan Shu, Shixia Liu_  
+
+
 ##  Cite
 
 If you use our work and are inspired by our work, please consider cite us (available soon):
