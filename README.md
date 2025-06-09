@@ -32,7 +32,7 @@ For detailed evaluation instructions and usage, please refer to the [Evaluation]
 
 ## 📚 Citation
 
-If you use our work and are inspired by our work, please consider cite us:
+If you use our work and are inspired by our work, please cite:
 
 ```
 @misc{lin2025infochartqa,
