@@ -60,4 +60,4 @@ Our original data contributions (all data except the charts) are distributed und
 
 ## 💬 Contact
 
-If you have any questions about this work, please contact us using the following email address: **[mail](mail)**. 
+If you have any questions about this work, please contact us using the following email address: **[linmz21@mails.tsinghua.edu.cn](linmz21@mails.tsinghua.edu.cn)**. 
