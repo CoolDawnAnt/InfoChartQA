@@ -35,13 +35,11 @@ For detailed evaluation instructions and usage, please refer to the [Evaluation]
 If you use our work and are inspired by our work, please consider cite us:
 
 ```
-@misc{lin2025infochartqabenchmarkmultimodalquestion,
+@misc{lin2025infochartqa,
       title={InfoChartQA: A Benchmark for Multimodal Question Answering on Infographic Charts}, 
       author={Minzhi Lin and Tianchi Xie and Mengchen Liu and Yilin Ye and Changjian Chen and Shixia Liu},
       year={2025},
       eprint={2505.19028},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
       url={https://arxiv.org/abs/2505.19028}, 
 }
 ```
@@ -56,7 +54,8 @@ Our original data contributions (all data except the charts) are distributed und
 [Paper](https://arxiv.org/abs/2505.17473) | [Code](https://github.com/OrionBench/OrionBench/) | [Dataset](https://huggingface.co/datasets/OrionBench/OrionBench)
 
 
-
+- **ChartGalaxy: A Dataset for Infographic Chart Understanding and Generation**
+[paper](https://arxiv.org/abs/2505.18668) | [Code](https://github.com/ChartGalaxy/ChartGalaxy/) | [Dataset](https://huggingface.co/datasets/ChartGalaxy/ChartGalaxy)
 
 ## 💬 Contact
 
