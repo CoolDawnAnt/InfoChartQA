@@ -55,8 +55,7 @@ Our original data contributions (all data except the charts) are distributed und
 - **OrionBench: A Benchmark for Chart and Human-Recognizable Object Detection in Infographics**  
 [Paper](https://arxiv.org/abs/2505.17473) | [Code](https://github.com/OrionBench/OrionBench/) | [Dataset](https://huggingface.co/datasets/OrionBench/OrionBench)
 
-- **InfoChartQA: A Benchmark for Multimodal Question Answering on Infographic Charts**  
-[Paper](https://arxiv.org/abs/2505.19028) | [Code](https://github.com/CoolDawnAnt/InfoChartQA) | [Dataset](https://huggingface.co/datasets/Jietson/InfoChartQA)
+
 
 
 ## 💬 Contact
