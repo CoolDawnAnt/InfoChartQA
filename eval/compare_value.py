@@ -218,7 +218,7 @@ def Convert2Number(value):
     if is_number(cmx):
         return float(cmx) if f else -float(cmx)
     else:
-        return -1145141919810
+        return "NoTANumber"
 
 # from quantulum3 import parser as PSP
 def get_unit_and_numeric(_s):
@@ -240,7 +240,7 @@ def get_unit_and_numeric(_s):
             if unit not in unit_map:
                 unit = "None"
             return number , unit
-    return "1145141919810" , "None"
+    return "NoTANumber" , "None"
     
 def compare_numeric_value(_answer, _response, eps = 0.001):
     response = _response.replace('\n',' ')
@@ -253,7 +253,8 @@ def compare_numeric_value(_answer, _response, eps = 0.001):
     # print(ans_number,ans_unit,type(ans_number))
     ans_number = Convert2Number(ans_number)
     response_number = Convert2Number(response_number)
-
+    if response_number == "NoTANumber":
+        return False
     
     for unit1 in [ans_unit, 'None']:
         for unit2 in [response_unit, 'None']:
@@ -287,5 +288,5 @@ def compare_value(_answer, _response, eps = 0.001):
         return fuzzy_string_match(answer , response)
 
 if __name__ == '__main__':
-    f = compare_value("14.200000000000001","14.2 µg/m³",0.05)
+    f = compare_value("10-15","ABCDEF",0.05)
     print(f)

@@ -34,9 +34,9 @@ def evaluate_answer(answer, response, qtype):
             return "Vague String", fuzzy_string_match(answer, response)
     elif qtype in [72, 54]:
         return "Exact Numeric", compare_value(answer, response)
-    elif qtype in [10, 50, 51, 52, 110]:
+    elif qtype in [10, 11, 12, 50, 51, 52, 110]:
         return "Vague Numeric", compare_value(answer, response, eps=0.05)
-    elif qtype in [13, 103, 113]:
+    elif qtype in [13, 14, 15, 103, 113]:
         if answer.lower() in response.lower():
             return "Exact String", True
         return "Exact String", compare_value(answer, response)
@@ -94,14 +94,14 @@ def process_json_data(json_data):
         response = response.replace(" "," ")
 
 
-        figure_path = item["figure_path"]
-        if type(figure_path) == list:
-            figure_path = figure_path[0]
+        # figure_path = item["figure_path"]
+        # if type(figure_path) == list:
+        #     figure_path = figure_path[0]
 
         eval_method, score = evaluate_answer(answer, response, qtype)
 
         results.append({
-            "figure_path": figure_path,
+            # "figure_path": figure_path,
             "answer": answer,
             "response": response,
             "question": item["question"] if "question" in item else "",
@@ -114,8 +114,8 @@ def process_json_data(json_data):
         stats['qtype_stats'][qtype]['correct'] += score
         stats['qtype_stats'][qtype]['total'] += 1
 
-        stats['figure_stats'][figure_path]['correct'] += score
-        stats['figure_stats'][figure_path]['total'] += 1
+        # stats['figure_stats'][figure_path]['correct'] += score
+        # stats['figure_stats'][figure_path]['total'] += 1
 
         stats['total_correct'] += score
         stats['total_questions'] += 1
@@ -155,6 +155,7 @@ def generate_stat_report(stats):
 
 from copy import deepcopy
 def evaluate(input_file, output_file=None, stats_file=None):
+    print(output_file)
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(input_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
