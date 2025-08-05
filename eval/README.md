@@ -1,35 +1,97 @@
 # Evaluation Instructions
 
-This document provides step-by-step instructions to evaluate your model on **InfoChartQA**.
+<!-- This document provides step-by-step instructions to evaluate your model on **InfoChartQA**.
 
-**If you're using dataset from huggingface, you can also refer to ''example.py'' on how to evaluate your model the dataset on huggingface.**
+### ⚙️ Note: You can also refer to ''example.py'' on how to evaluate your model. -->
 
-## 📂 Input Format
+## Run the evaluation
+This section provides step-by-step instruction to evaluate an OpenAI model on the text-based questions.
 
-Each question entry in the JSON file should follow this format:
+### Step 1: Specify the API_KEY
+Specify your OpenAI API_KEY in the [15](https://github.com/CoolDawnAnt/InfoChartQA/blob/main/eval/example.py#L15) line of the [example.py](https://github.com/CoolDawnAnt/InfoChartQA/blob/main/eval/example.py).
 
-```json
-{
-  "question_id": 123,
-  "qtype": 1,
-  "figure_path": "path/to/main_chart.png",
-  "visual_figure_path": ["path/to/element1.png", "path/to/element2.png"],
-  "question": "What does the icon represent?",
-  "answer": "B",
-  "instructions": "Please select the most appropriate answer.",
-  "prompt": "You are an expert in understanding infographic charts.",
-  "options": [
-    "A) Option 1",
-    "B) Option 2",
-    "C) Option 3",
-    "D) Option 4"
-  ]
-}
+### Step 2: Run the evaluation
+```sh
+$ python example.py
+```
+This will download the text-based questions for infochart (the `info` split) from HuggingFace (it takes ~10min for download at 10 MB/s) and evaluate the model on these questions.
+
+## The evaluation process explanation [example.py](https://github.com/CoolDawnAnt/InfoChartQA/blob/main/eval/example.py)
+
+### Prepare the dataset
+<!-- Take `info` (text-based questions for infochart) split as example. Use 'datasets' to download our dataset. (Takes ~10min for download at 10 MB/s) -->
+These codes will automatically download the questions from HuggingFace. The splits include: `info`: text-based questions for infochart, `plain`: text-based questions for plainchart, `visual_basic`: visual basic questions, `visual_metaphor`: visual metaphor questions.
+```python
+from datasets import load_dataset
+ds = load_dataset("Jietson/InfoChartQA", split="info")
 ```
 
-### Text Input Format to Model
 
-To evaluate, you should construct the question prompt as:
+### Preprare the model
+
+This part preprares your model that takes ```generate(text, images)``` as an interface to generate answers. You can specify your own BASE_URL and API_KEY.
+
+```python
+
+from openai import OpenAI
+import base64
+from io import BytesIO
+YOUR_API_KEY = YOUR_API_KEY_HERE
+
+class GPT4o(object):
+    def __init__(self):
+        self.client = OpenAI(
+            api_key= YOUR_API_KEY,
+            base_url="https://api.openai.com/v1"
+        )
+    def encode_image(self, image, format='PNG'):
+        buffer = BytesIO()
+        if format.upper() == 'JPEG':
+            image.save(buffer, format=format, quality=95)
+        else:
+            image.save(buffer, format=format)
+        image_data = buffer.getvalue()
+        buffer.close()
+        base64_str = base64.b64encode(image_data).decode('utf-8')
+
+        return base64_str
+
+    def ask(self, context = None, images = None, model="gpt-4o"):
+        content = [{"type": "text","text": context}]
+        if images is not None:
+            for image in images:
+                print(image)
+                base64_image = self.encode_image(image)
+                content.append({ "type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}, },)
+        number_of_trials = 0
+        while number_of_trials < 5:
+            try:
+                response = self.client.chat.completions.create(
+                    model=model,
+                    messages=[
+                        {
+                            "role": "user",
+                            "content":content
+                        }
+                    ]
+                )
+                return response.choices[0].message.content
+            except Exception as e:
+                print(e)
+                number_of_trials += 1
+
+        return 'Error!'
+    
+    def generate(self, text, images):
+        return self.ask(text , images, "gpt-4o")
+
+model = GPT4o()
+
+```
+
+### Run the model and save model's response.
+<!-- For each entry in the dataset, you should instruct the full input question as followings (in function *build_questions*).  -->
+This part evaluates the model and save the model's response in a local file (model_response.json).
 
 ```python
 def build_question(query):
@@ -37,60 +99,40 @@ def build_question(query):
     if "prompt" in query:
         question += f"{query['prompt']}\n"
     question += f"{query['question']}\n"
-    if "options" in query:
-        for k in query["options"]:
-            question += k
+    if "options" in query and len(query["options"]) > 0:
+        for option in query["options"]:
+            question += f"{option}\n"
     if "instructions" in query:
         question += query["instructions"]
     return question
-```
 
-## ⚙️ Evaluation Workflow
+Responses = {}
 
-1. Load all questions from question.
-2. Construct the text input using the function above.
-3. Provide the input chart images:
-   * One main chart (`figure_path`)
-   * (Optional) design elements (`visual_figure_path`)
-4. Feed both the text and image(s) into your MLLM for answer generation.
-5. Save Each answer, formatting as "{"qytpe": ... , "question_id": ... , "answer": ... , "response": ...}", where "response" is model's response.
-6. Save responses into a new JSON file (e.g., `model_response.json`).
+for query in tqdm(ds):
+    query_idx = query["question_id"]
+    question_text = build_question(query)
+    chart_figure = [query["figure_path"]] # This should be a list of PIL Image Object
+    visual_figure = query.get("visual_figure_path",[])
 
-### Example Code
-
-```python
-import json
-
-with open("visual_basic.json", "r", encoding="utf-8") as f:
-    queries = json.load(f)
-
-for query in queries:
-    question = build_question(query)
-    figure_path = [query["figure_path"]]
-    visual_paths = query.get("visual_figure_path", [])
-    
     # Replace with your model
-    response = model.generate(question, figure_path + visual_paths)
-    query["response"] = response
+    response = model.generate(question_text, chart_figure + visual_figure)
+
+
+    Responses[query_idx] = {
+        "qtype": int(query["qtype"]),
+        "answer": query["answer"],
+        "question_id": query_idx,
+        "response": response,
+    }
 
 with open("./model_response.json", "w", encoding="utf-8") as f:
-    json.dump(queries, f, indent=2)
+    json.dump(Responses, f, indent = 2, ensure_ascii=False)
 ```
 
-
-## ✅ Run Evaluation
-
-Once you have your output file:
-
-```bash
-python -c "import checker; checker.evaluate('./model_response.json', './result.json')"
-```
-
-Or use in a Python script:
+### Evaluation
+In the end, the accuracy is calculated.
 
 ```python
 from checker import evaluate
-evaluate("./model_response.json", "./result.json")
+evaluate("./model_response.json", "./path_to_save_the_result.json")
 ```
-
-**If you're using dataset from huggingface, you can also refer to ''example.py'' on how to evaluate your model the dataset on huggingface.**
