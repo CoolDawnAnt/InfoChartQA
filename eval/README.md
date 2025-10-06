@@ -14,16 +14,16 @@ Specify your OpenAI API_KEY in the [15](https://github.com/CoolDawnAnt/InfoChart
 ```sh
 $ python example.py
 ```
-This will download the text-based questions for infochart (the `info` split) from HuggingFace (it takes ~10min for download at 10 MB/s) and evaluate the model on these questions.
+This will download the text-based questions for infochart (the `info` split) from HuggingFace (it takes ~1min for download at 10 MB/s) and evaluate the model on these questions.
 
 ## The evaluation process explanation [example.py](https://github.com/CoolDawnAnt/InfoChartQA/blob/main/eval/example.py)
 
 ### Prepare the dataset
-<!-- Take `info` (text-based questions for infochart) split as example. Use 'datasets' to download our dataset. (Takes ~10min for download at 10 MB/s) -->
+<!-- Take `info` (text-based questions for infochart) split as example. Use 'datasets' to download our dataset. (Takes ~1min for download at 10 MB/s) -->
 These codes will automatically download the questions from HuggingFace. The splits include: `info`: text-based questions for infochart, `plain`: text-based questions for plainchart, `visual_basic`: visual basic questions, `visual_metaphor`: visual metaphor questions.
 ```python
 from datasets import load_dataset
-ds = load_dataset("Jietson/InfoChartQA", split="info")
+ds = load_dataset("Jietson/InfoChartQA", split="text")
 ```
 
 
@@ -36,14 +36,17 @@ This part preprares your model that takes ```generate(text, images)``` as an int
 from openai import OpenAI
 import base64
 from io import BytesIO
-YOUR_API_KEY = YOUR_API_KEY_HERE
+
+YOUR_API_KEY = YOU_API_KEY_HERE
+
 
 class GPT4o(object):
     def __init__(self):
         self.client = OpenAI(
-            api_key= YOUR_API_KEY,
+            api_key=YOUR_API_KEY,
             base_url="https://api.openai.com/v1"
         )
+
     def encode_image(self, image, format='PNG'):
         buffer = BytesIO()
         if format.upper() == 'JPEG':
@@ -56,13 +59,11 @@ class GPT4o(object):
 
         return base64_str
 
-    def ask(self, context = None, images = None, model="gpt-4o"):
-        content = [{"type": "text","text": context}]
-        if images is not None:
-            for image in images:
-                print(image)
-                base64_image = self.encode_image(image)
-                content.append({ "type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}, },)
+    def ask(self, context=None, image_urls=None, model="gpt-4o"):
+        content = [{"type": "text", "text": context}]
+        if image_urls is not None:
+            for image_url in image_urls:
+                content.append({"type": "image_url", "image_url": {"url": image_url}, }, )
         number_of_trials = 0
         while number_of_trials < 5:
             try:
@@ -71,7 +72,7 @@ class GPT4o(object):
                     messages=[
                         {
                             "role": "user",
-                            "content":content
+                            "content": content
                         }
                     ]
                 )
@@ -81,9 +82,10 @@ class GPT4o(object):
                 number_of_trials += 1
 
         return 'Error!'
-    
+
     def generate(self, text, images):
-        return self.ask(text , images, "gpt-4o")
+        return self.ask(text, images, "gpt-4o")
+
 
 model = GPT4o()
 
@@ -111,7 +113,7 @@ Responses = {}
 for query in tqdm(ds):
     query_idx = query["question_id"]
     question_text = build_question(query)
-    chart_figure = [query["figure_path"]] # This should be a list of PIL Image Object
+    chart_figure = query["url"]  # This should be a list of url
     visual_figure = query.get("visual_figure_path",[])
 
     # Replace with your model
