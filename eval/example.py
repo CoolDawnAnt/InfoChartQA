@@ -4,22 +4,24 @@ from tqdm import tqdm
 
 #####  download the dataset
 
-ds = load_dataset("Jietson/InfoChartQA", split="info")
-
+ds = load_dataset("Jietson/InfoChartQA", split="text")
 
 #### Prepare your model here
 
 from openai import OpenAI
 import base64
 from io import BytesIO
+
 YOUR_API_KEY = YOUR_API_KEY_HERE
+
 
 class GPT4o(object):
     def __init__(self):
         self.client = OpenAI(
-            api_key= YOUR_API_KEY,
+            api_key=YOUR_API_KEY,
             base_url="https://api.openai.com/v1"
         )
+
     def encode_image(self, image, format='PNG'):
         buffer = BytesIO()
         if format.upper() == 'JPEG':
@@ -32,13 +34,11 @@ class GPT4o(object):
 
         return base64_str
 
-    def ask(self, context = None, images = None, model="gpt-4o"):
-        content = [{"type": "text","text": context}]
-        if images is not None:
-            for image in images:
-                print(image)
-                base64_image = self.encode_image(image)
-                content.append({ "type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}, },)
+    def ask(self, context=None, image_urls=None, model="gpt-4o"):
+        content = [{"type": "text", "text": context}]
+        if image_urls is not None:
+            for image_url in image_urls:
+                content.append({"type": "image_url", "image_url": {"url": image_url}, }, )
         number_of_trials = 0
         while number_of_trials < 5:
             try:
@@ -47,7 +47,7 @@ class GPT4o(object):
                     messages=[
                         {
                             "role": "user",
-                            "content":content
+                            "content": content
                         }
                     ]
                 )
@@ -57,13 +57,12 @@ class GPT4o(object):
                 number_of_trials += 1
 
         return 'Error!'
-    
+
     def generate(self, text, images):
-        return self.ask(text , images, "gpt-4o")
+        return self.ask(text, images, "gpt-4o")
+
 
 model = GPT4o()
-
-
 
 
 #### Format Input
@@ -88,12 +87,10 @@ Responses = {}
 for query in tqdm(ds):
     query_idx = query["question_id"]
     question_text = build_question(query)
-    chart_figure = [query["figure_path"]] # This should be a list of PIL Image Object
-    visual_figure = query.get("visual_figure_path",[])
+    chart_figure = query["url"]  # This should be a list of url
 
     # Replace with your model
-    response = model.generate(question_text, chart_figure + visual_figure)
-
+    response = model.generate(question_text, chart_figure)
 
     Responses[query_idx] = {
         "qtype": int(query["qtype"]),
@@ -101,12 +98,12 @@ for query in tqdm(ds):
         "question_id": query_idx,
         "response": response,
     }
-
+    # break
 
 with open("./model_response.json", "w", encoding="utf-8") as f:
-    json.dump(Responses, f, indent = 2, ensure_ascii=False)
-
+    json.dump(Responses, f, indent=2, ensure_ascii=False)
 
 #### Evaluate your answer
 from checker import evaluate
+
 evaluate("./model_response.json", "./path_to_save_the_result.json")
