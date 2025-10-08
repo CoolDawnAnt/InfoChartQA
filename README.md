@@ -16,7 +16,26 @@ You can find our dataset on huggingface: [InfoChartQA Dataset](https://huggingfa
 ### Evaluation Results
 <img src="result.png" width="70%" alt="Evaluation Results" />
 
-
+### Usage
+Each question entry is arranged as:
+```
+        "question_id": id of the question,
+        "qtype": type of the question, for example: "rank" questions 
+        "figure_path": local path of the image if you download the image,
+        "question": question,  
+        "answer": answer,
+        "instructions": instructions,
+        "url": url of the image,
+        "bbox": bbox of the image, this is used for visual questions. Images with bbox should be cropped based on the bbox. bbox is formatted as [xmin, ymin, width, height] with no normalization.
+        "parent": the original image of the cropped image, 
+        "difficulty": difficulty level,
+        "chart_type": chart_type,
+```
+Each question is built as:
+```
+image_input: url (may need to download for models that don't support url input)
+text_iunput: question + instructions (if any)
+```
 ###  Evaluation Instructions
 
 
