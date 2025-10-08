@@ -92,7 +92,7 @@ for query in tqdm(ds):
     """
         Note that for models that do not support url input, you may need to download images first.
         For example, for model like Qwen2.5-VL, you may need to down load the image first and pass the local image path to the model,
-        like: figure_path = YOUR_LOCAL_IMAGE_PATH OF query['figure_path']
+        like: figure_path = YOUR_LOCAL_IMAGE_PATH OF query['figure_id']
     """
 
     # Replace with your model

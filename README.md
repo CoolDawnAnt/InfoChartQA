@@ -23,7 +23,7 @@ Each question entry is arranged as:
         "question_id": id of the question,
         "question_type_name": question type name, for example: "extreme" questions 
         "question_type_id": question type id, for example: 72 means "extreme" questions
-        "figure_path": local path of the image if you download the image,
+        "figure_id": id of the figure,
         "question": question,  
         "answer": answer,
         "instructions": instructions,
