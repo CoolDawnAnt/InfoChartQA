@@ -20,7 +20,7 @@ This will download the text-based questions for infochart (the `text` split) fro
 
 ### Prepare the dataset
 <!-- Take `info` (text-based questions for infochart) split as example. Use 'datasets' to download our dataset. (Takes ~1min for download at 10 MB/s) -->
-These codes will automatically download the questions from HuggingFace. The splits include: `info`: text-based questions for infochart, `plain`: text-based questions for plainchart, `visual_basic`: visual basic questions, `visual_metaphor`: visual metaphor questions.
+These codes will automatically download the questions from HuggingFace. The splits include: `text`: text-based questions, `visual_basic`: visual basic questions, `visual_metaphor`: visual metaphor questions.
 ```python
 from datasets import load_dataset
 ds = load_dataset("Jietson/InfoChartQA", split="text")
