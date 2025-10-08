@@ -14,7 +14,7 @@ Specify your OpenAI API_KEY in the [15](https://github.com/CoolDawnAnt/InfoChart
 ```sh
 $ python example.py
 ```
-This will download the text-based questions for infochart (the `info` split) from HuggingFace (it takes ~1min for download at 10 MB/s) and evaluate the model on these questions.
+This will download the text-based questions for infochart (the `text` split) from HuggingFace (it takes ~1min for download at 10 MB/s) and evaluate the model on these questions.
 
 ## The evaluation process explanation [example.py](https://github.com/CoolDawnAnt/InfoChartQA/blob/main/eval/example.py)
 
@@ -29,7 +29,7 @@ ds = load_dataset("Jietson/InfoChartQA", split="text")
 
 ### Preprare the model
 
-This part preprares your model that takes ```generate(text, images)``` as an interface to generate answers. You can specify your own BASE_URL and API_KEY.
+This part preprares your model that takes ```generate(text, images)``` as an interface to generate answers. You can specify your own ```BASE_URL``` and ```API_KEY```.
 
 ```python
 
@@ -91,7 +91,10 @@ model = GPT4o()
 
 ```
 
+You can also prepare your custom model class that can support ``generate(query, image_path)`` as interface api. An example model class is in ``models/qwen_2_5_vl.py``
+
 ### Run the model and save model's response.
+
 <!-- For each entry in the dataset, you should instruct the full input question as followings (in function *build_questions*).  -->
 This part evaluates the model and save the model's response in a local file (model_response.json).
 
@@ -108,19 +111,24 @@ def build_question(query):
         question += query["instructions"]
     return question
 
+
+#### Run your model and save your answer
+
 Responses = {}
 
 for query in tqdm(ds):
     query_idx = query["question_id"]
     question_text = build_question(query)
-    chart_figure = query["url"]  # This should be a list of url
-    """
-    Note that for models that do not support url input, you may need to download images first.
-    """
-    
-    # Replace with your model
-    response = model.generate(question_text, chart_figure)
+    figure_path = query["url"]  # This should be a list of url for models that support url input
 
+    """
+        Note that for models that do not support url input, you may need to download images first.
+        For example, for model like Qwen2.5-VL, you may need to down load the image first and pass the local image path to the model,
+        like: figure_path = YOUR_LOCAL_IMAGE_PATH OF query['figure_path']
+    """
+
+    # Replace with your model
+    response = model.generate(question_text, figure_path)
 
     Responses[query_idx] = {
         "qtype": int(query["qtype"]),

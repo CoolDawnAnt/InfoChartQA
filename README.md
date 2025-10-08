@@ -19,6 +19,7 @@ You can find our dataset on huggingface: [InfoChartQA Dataset](https://huggingfa
 ### Usage
 Each question entry is arranged as:
 ```
+{
         "question_id": id of the question,
         "qtype": type of the question, for example: "rank" questions 
         "figure_path": local path of the image if you download the image,
@@ -30,12 +31,15 @@ Each question entry is arranged as:
         "parent": the original image of the cropped image, 
         "difficulty": difficulty level,
         "chart_type": chart_type,
+}
 ```
-Each question is built as:
+Each question is built on:
 ```
-image_input: url (may need to download for models that don't support url input)
-text_iunput: question + instructions (if any)
+image_input: item["url"] (may need to download for models that don't support url input)
+text_iunput: item["question"] + item["instructions"] (if any)
 ```
+where ``item`` is an entry of the dataset.
+
 ###  Evaluation Instructions
 
 

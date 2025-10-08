@@ -4,15 +4,15 @@ from tqdm import tqdm
 
 #####  download the dataset
 
-ds = load_dataset("Jietson/InfoChartQA", split="text")
+# ds = load_dataset("Jietson/InfoChartQA", split="text")
 
 #### Prepare your model here
 
 from openai import OpenAI
 import base64
 from io import BytesIO
-
-YOUR_API_KEY = YOUR_API_KEY_HERE
+from models.qwen_2_5_vl import Qwen2_5_VL
+# YOUR_API_KEY = YOUR_API_KEY_HERE
 
 
 class GPT4o(object):
@@ -63,7 +63,7 @@ class GPT4o(object):
 
 
 model = GPT4o()
-
+# or model = Qwen2_5_VL() or YOUR CUSTOM MODEL
 
 #### Format Input
 
@@ -87,10 +87,16 @@ Responses = {}
 for query in tqdm(ds):
     query_idx = query["question_id"]
     question_text = build_question(query)
-    chart_figure = query["url"]  # This should be a list of url
+    figure_path = query["url"]  # This should be a list of url for models that support url input
+
+    """
+        Note that for models that do not support url input, you may need to download images first.
+        For example, for model like Qwen2.5-VL, you may need to down load the image first and pass the local image path to the model,
+        like: figure_path = YOUR_LOCAL_IMAGE_PATH OF query['figure_path']
+    """
 
     # Replace with your model
-    response = model.generate(question_text, chart_figure)
+    response = model.generate(question_text, figure_path)
 
     Responses[query_idx] = {
         "qtype": int(query["qtype"]),
@@ -98,7 +104,6 @@ for query in tqdm(ds):
         "question_id": query_idx,
         "response": response,
     }
-    # break
 
 with open("./model_response.json", "w", encoding="utf-8") as f:
     json.dump(Responses, f, indent=2, ensure_ascii=False)
