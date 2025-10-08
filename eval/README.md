@@ -114,10 +114,12 @@ for query in tqdm(ds):
     query_idx = query["question_id"]
     question_text = build_question(query)
     chart_figure = query["url"]  # This should be a list of url
-    visual_figure = query.get("visual_figure_path",[])
-
+    """
+    Note that for models that do not support url input, you may need to download images first.
+    """
+    
     # Replace with your model
-    response = model.generate(question_text, chart_figure + visual_figure)
+    response = model.generate(question_text, chart_figure)
 
 
     Responses[query_idx] = {
