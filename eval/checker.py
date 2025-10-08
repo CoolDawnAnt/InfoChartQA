@@ -62,7 +62,7 @@ def evaluate_answer(answer, response, qtype):
             if is_sequence_match_ordered(an.split(","), response.split(","), fuzzy=True):
                 return "Vague Ordered Sequence", True
         return "Vague Ordered Sequence", False
-    elif qtype in [202,1919810,1919811,1919812]:
+    elif qtype in [202,300,1919810,1919811,1919812]:
         return "Exact String", multiple_choice_checker(answer , response)
     else:
         print('there is no qtype',qtype)

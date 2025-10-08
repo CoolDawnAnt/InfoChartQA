@@ -21,7 +21,8 @@ Each question entry is arranged as:
 ```
 {
         "question_id": id of the question,
-        "qtype": type of the question, for example: "rank" questions 
+        "question_type_name": question type name, for example: "extreme" questions 
+        "question_type_id": question type id, for example: 72 means "extreme" questions
         "figure_path": local path of the image if you download the image,
         "question": question,  
         "answer": answer,
@@ -51,7 +52,7 @@ For detailed evaluation instructions and usage, please refer to the [Evaluation]
 ## 📄 Paper
 
 - **[InfoChartQA: A Benchmark for Multimodal Question Answering on Infographic Charts](https://arxiv.org/abs/2505.19028)**  
-  _Minzhi Lin, Tianchi Xie, Mengchen Liu, Yilin Ye, Changjian Chen, Shixia Liu_  
+*Tianchi Xie*, _Minzhi Lin,  Mengchen Liu, Yilin Ye, Changjian Chen, Shixia Liu_  
 
 ## 📚 Citation
 
@@ -60,7 +61,7 @@ If you use our work and are inspired by our work, please cite:
 ```
 @misc{lin2025infochartqa,
       title={InfoChartQA: A Benchmark for Multimodal Question Answering on Infographic Charts}, 
-      author={Minzhi Lin and Tianchi Xie and Mengchen Liu and Yilin Ye and Changjian Chen and Shixia Liu},
+      author={Tianchi Xie and Minzhi Lin and Mengchen Liu and Yilin Ye and Changjian Chen and Shixia Liu},
       year={2025},
       eprint={2505.19028},
       url={https://arxiv.org/abs/2505.19028}, 

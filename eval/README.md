@@ -131,14 +131,15 @@ for query in tqdm(ds):
     response = model.generate(question_text, figure_path)
 
     Responses[query_idx] = {
-        "qtype": int(query["qtype"]),
+        "qtype": int(query["question_type_id"]),
         "answer": query["answer"],
         "question_id": query_idx,
         "response": response,
     }
 
 with open("./model_response.json", "w", encoding="utf-8") as f:
-    json.dump(Responses, f, indent = 2, ensure_ascii=False)
+    json.dump(Responses, f, indent=2, ensure_ascii=False)
+
 ```
 
 ### Evaluation

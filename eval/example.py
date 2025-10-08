@@ -4,7 +4,7 @@ from tqdm import tqdm
 
 #####  download the dataset
 
-# ds = load_dataset("Jietson/InfoChartQA", split="text")
+ds = load_dataset("Jietson/InfoChartQA", split="text")
 
 #### Prepare your model here
 
@@ -99,7 +99,7 @@ for query in tqdm(ds):
     response = model.generate(question_text, figure_path)
 
     Responses[query_idx] = {
-        "qtype": int(query["qtype"]),
+        "qtype": int(query["question_type_id"]),
         "answer": query["answer"],
         "question_id": query_idx,
         "response": response,
