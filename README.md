@@ -14,7 +14,9 @@ You can find our dataset on huggingface: [InfoChartQA Dataset](https://huggingfa
 ## Evaluation 
 
 ### Evaluation Results
-![xbhs3](result.png)
+<p align="center">
+  <img src="result.png" alt="xbhs3" width="70%">
+</p>
 
 ### Usage
 Each question entry is arranged as:
