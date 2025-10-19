@@ -6,7 +6,7 @@
 ![xbhs3](teaser.jpg)
 
 ## About
-**InfoChartQA** is a benchmark for evaluating multimodal large language models (MLLMs) on infographic charts enriched with design-driven visual elements like pictograms and icons. It features **5,948 pairs of infographic and plain charts** that share the same underlying data but differ in visual style, enabling controlled comparisons. The dataset contains a total of **58,857 questions**, including **50,920** text-based and **7,937** visual-element-based questions designed to probe model understanding of both content and complex visual design. Our analysis of 20 MLLMs reveals significant performance drops on infographic charts, highlighting key challenges and new research directions.
+**InfoChartQA** is a benchmark for evaluating multimodal large language models (MLLMs) on infographic charts enriched with pictorial visual elements like pictograms and icons. It features **5,948 pairs of infographic and plain charts** that share the same underlying data but differ in visual style, enabling controlled comparisons. The dataset contains a total of **58,857 questions**, including **50,920** text-based and **7,937** visual-element-based questions designed to probe model understanding of both content and complex visual design. Our analysis of 20 MLLMs reveals significant performance drops on infographic charts, highlighting key challenges and new research directions.
 
 ## 🤗 Dataset 
 You can find our dataset on huggingface: [InfoChartQA Dataset](https://huggingface.co/datasets/Jietson/InfoChartQA)
