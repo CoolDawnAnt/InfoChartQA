@@ -19,29 +19,34 @@ You can find our dataset on huggingface: [InfoChartQA Dataset](https://huggingfa
 </p>
 
 ### Usage
-Each question entry is arranged as:
+Each question entry is arranged as follows. **Note that for visual questions, there may be some extra input figures, which are cropped from the orginal figure. We present their bboxes in "extra_input_figure_bbox".**
 ```
 {
         "question_id": id of the question,
-        "question_type_name": question type name, for example: "extreme" questions,
-        "question_type_id": question type id, for example: 72 means "extreme" questions,
+        "question_type_name": question type name, for example: "extreme" questions, 
+        "question_type_id": question type id, this is only used for evaluation! For example: 72 means "extreme" questions,
         "figure_id": id of the figure,
-        "question": question,  
-        "answer": answer,
+        "question": question text,  
+        "answer": ground truth answer,
         "instructions": instructions,
-        "url": url of the image,
-        "bbox": bbox of the image, this is used for visual questions. Images with bbox should be cropped based on the bbox. bbox is formatted as [xmin, ymin, width, height] with no normalization.
-        "parent": the original image of the cropped image, 
+        "url": url of the input image,
+        "extra_input_figure_ids": ids of the extra input figures,
+        "extra_input_figure_bboxes": bbox of the extra input figures, in [x,y,w,h] format w/o normalization.
         "difficulty": difficulty level,
         "chart_type": chart_type,
 }
 ```
-Each question is built on:
+
+Each question is built by:
+
 ```
-image_input: item["url"] (may need to download for models that don't support url input)
-text_iunput: item["question"] + item["instructions"] (if any)
+input_image: item["url"] (may need to download for models that don't support url input)
+extra_input_image: Cropped input_image using item["extra_input_figure_bboxes"],
+input_text: item["question"] + item["instructions"] (if any)
 ```
+
 where ``item`` is an entry of the dataset.
+
 
 ###  Evaluation Instructions
 
