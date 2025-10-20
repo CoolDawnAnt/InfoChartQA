@@ -68,13 +68,7 @@ model = GPT4o()
 #### Format Input
 
 def build_question(query):
-    question = ""
-    if "prompt" in query:
-        question += f"{query['prompt']}\n"
-    question += f"{query['question']}\n"
-    if "options" in query and len(query["options"]) > 0:
-        for option in query["options"]:
-            question += f"{option}\n"
+    question = query['question']
     if "instructions" in query:
         question += query["instructions"]
     return question
@@ -86,17 +80,19 @@ Responses = {}
 
 for query in tqdm(ds):
     query_idx = query["question_id"]
-    question_text = build_question(query)
-    figure_path = query["url"]  # This should be a list of url for models that support url input
+    input_text = build_question(query)
+    input_figure = query["url"]  # This should be a list of url for models that support url input
 
     """
         Note that for models that do not support url input, you may need to download images first.
         For example, for model like Qwen2.5-VL, you may need to down load the image first and pass the local image path to the model,
-        like: figure_path = YOUR_LOCAL_IMAGE_PATH OF query['figure_id']
+        like: input_figure = YOUR_LOCAL_IMAGE_PATH OF query['figure_id']
+        Moreover, for questions with extra figure input, you may need to crop figure, for example,
+        extra_input_figures = [crop(input_figure,bbox) for bbox in query["extra_input_figure_bboxes"]]
     """
 
     # Replace with your model
-    response = model.generate(question_text, figure_path)
+    response = model.generate(input_text, input_figure)
 
     Responses[query_idx] = {
         "qtype": int(query["question_type_id"]),

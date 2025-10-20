@@ -2,7 +2,7 @@
 
 <!-- This document provides step-by-step instructions to evaluate your model on **InfoChartQA**.
 
-### ⚙️ Note: You can also refer to ''example.py'' on how to evaluate your model. -->
+### ⚙️ Note: You can also refer to [example.py](https://github.com/CoolDawnAnt/InfoChartQA/blob/main/eval/example.py) on how to evaluate your model. -->
 
 ## Run the evaluation
 This section provides step-by-step instruction to evaluate an OpenAI model on the text-based questions.
@@ -91,22 +91,16 @@ model = GPT4o()
 
 ```
 
-You can also prepare your custom model class that can support ``generate(query, image_path)`` as interface api. An example model class is in ``models/qwen_2_5_vl.py``
+Note that you can also prepare your custom model class that can support ``generate(query, image_path)`` as interface api. An example model class is in ``models/qwen_2_5_vl.py``
 
 ### Run the model and save model's response.
 
-<!-- For each entry in the dataset, you should instruct the full input question as followings (in function *build_questions*).  -->
+<!-- For each entry in the dataset, you should instruct the full input question as followings (in function *build_question*).  -->
 This part evaluates the model and save the model's response in a local file (model_response.json).
 
 ```python
 def build_question(query):
-    question = ""
-    if "prompt" in query:
-        question += f"{query['prompt']}\n"
-    question += f"{query['question']}\n"
-    if "options" in query and len(query["options"]) > 0:
-        for option in query["options"]:
-            question += f"{option}\n"
+    question = query['question']
     if "instructions" in query:
         question += query["instructions"]
     return question

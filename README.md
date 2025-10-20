@@ -19,7 +19,7 @@ You can find our dataset on huggingface: [InfoChartQA Dataset](https://huggingfa
 </p>
 
 ### Usage
-Each question entry is arranged as follows. **Note that for visual questions, there may be some extra input figures, which are cropped from the orginal figure. We present their bboxes in "extra_input_figure_bbox".**
+Each question entry is arranged as follows. **Note that for visual questions, there may be some extra input figures, which are cropped from the orginal figure. We present their bboxes in "extra_input_figure_bboxes".**
 ```
 {
         "question_id": id of the question,
