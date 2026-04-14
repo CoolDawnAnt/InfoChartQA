@@ -85,7 +85,7 @@ Our original data contributions (all data except the charts) are distributed und
   [Paper](https://arxiv.org/abs/2505.18668) | [Code](https://github.com/ChartGalaxy/ChartGalaxy/) | [Dataset](https://huggingface.co/datasets/ChartGalaxy/ChartGalaxy)
 
 
-- **ChartGalaxy: A Dataset for Infographic Chart Understanding and Generation**  
+- **InfoDet: A Dataset for Infographic Element Detection**  
   [Paper](https://arxiv.org/abs/2505.17473) | [Code](https://github.com/infodet2025/InfoDet/) | [Dataset](https://huggingface.co/datasets/InfoDet/InfoDet)
   
 
