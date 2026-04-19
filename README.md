@@ -66,12 +66,11 @@ For detailed evaluation instructions and usage, please refer to the [Evaluation]
 If you use our work and are inspired by our work, please cite:
 
 ```
-@misc{lin2025infochartqa,
-      title={InfoChartQA: A Benchmark for Multimodal Question Answering on Infographic Charts}, 
-      author={Tianchi Xie and Minzhi Lin and Mengchen Liu and Yilin Ye and Changjian Chen and Shixia Liu},
-      year={2025},
-      eprint={2505.19028},
-      url={https://arxiv.org/abs/2505.19028}, 
+@inproceedings{xie2025infochartqa,
+  title={InfoChart{QA}: A Benchmark for Multimodal Question Answering on Infographic Charts},
+  author={Tianchi Xie and Minzhi Lin and Mengchen Liu and Yilin Ye and Changjian Chen and Shixia Liu},
+  booktitle={The Annual Conference on Neural Information Processing Systems (NeurIPS) Datasets and Benchmarks Track},
+  year={2025}
 }
 ```
 
